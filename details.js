@@ -2,13 +2,16 @@ const hamEndpoint = "https://api.pexels.com/v1/search?query=hamsters";
 const tigersEndpoint = "https://api.pexels.com/v1/search?query=tigers";
 let endPoint = "";
 const parameters = new URLSearchParams(location.search);
-const id = parameters.get("id");
+const ids = parseInt(parameters.get("id"));
+console.log(ids);
 const animal = parameters.get("animal");
 
 if (animal === "hamster") {
-  endPoint = "https://api.pexels.com/v1/search?query=hamsters" + "/" + id;
+  endPoint = "https://api.pexels.com/v1/search?query=hamsters";
 } else if (animal === "tiger") {
-  endPoint = "https://api.pexels.com/v1/search?query=tigers" + "/" + id;
+  endPoint = "https://api.pexels.com/v1/search?query=tigers";
+} else {
+  endPoint = "https://api.pexels.com/v1/search?query=" + animal;
 }
 
 const generateDetail = function () {
@@ -26,10 +29,14 @@ const generateDetail = function () {
     })
     .then((foto) => {
       console.log(foto);
-      const photo = foto.photos.find((p) => (p.id = id));
+      const fotoAr = foto.photos;
+      console.log(fotoAr);
+
+      let photo = fotoAr.find((p) => p.id === ids);
+
       console.log(photo);
       const img = document.querySelector(".card img");
-      img.src = photo.src.large;
+      img.setAttribute("src", photo.src.medium);
       const artist = document.querySelector(".card-title");
       artist.textContent = photo.photographer;
       const link = document.querySelector(".btn");
